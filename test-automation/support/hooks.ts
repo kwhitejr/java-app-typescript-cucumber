@@ -1,10 +1,11 @@
 import { Before, After, BeforeAll, AfterAll } from '@cucumber/cucumber';
 import { CustomWorld } from './world';
+import { ApiClient } from './api-client';
 
 BeforeAll(async function() {
   console.log('🚀 Starting test suite...');
   
-  const apiClient = require('./api-client').ApiClient.getInstance();
+  const apiClient = ApiClient.getInstance();
   console.log('⏳ Waiting for API to be ready...');
   
   const isReady = await apiClient.waitForApi(60, 2000);
@@ -15,14 +16,14 @@ BeforeAll(async function() {
   console.log('✅ API is ready!');
 });
 
-Before(async function(this: CustomWorld) {
-  console.log(`📝 Starting scenario: ${this.pickle.name}`);
+Before(async function(this: CustomWorld, testCase) {
+  console.log(`📝 Starting scenario: ${testCase.pickle.name}`);
   this.reset();
 });
 
-After(async function(this: CustomWorld, scenario) {
-  if (scenario.result?.status === 'FAILED') {
-    console.log(`❌ Scenario failed: ${this.pickle.name}`);
+After(async function(this: CustomWorld, testCase) {
+  if (testCase.result?.status === 'FAILED') {
+    console.log(`❌ Scenario failed: ${testCase.pickle.name}`);
     if (this.response) {
       console.log('Last response:', JSON.stringify(this.response, null, 2));
     }
@@ -30,7 +31,7 @@ After(async function(this: CustomWorld, scenario) {
       console.log('Last error:', JSON.stringify(this.lastError, null, 2));
     }
   } else {
-    console.log(`✅ Scenario passed: ${this.pickle.name}`);
+    console.log(`✅ Scenario passed: ${testCase.pickle.name}`);
   }
   
   this.createdUsers = [];

@@ -3,6 +3,7 @@ import { User, UserCreateRequest, ApiResponse, ErrorResponse } from './types';
 
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 const API_ENDPOINT = `${BASE_URL}/api/users`;
+const ACTUATOR_ENDPOINT = `${BASE_URL}/actuator`;
 
 export class ApiClient {
   private static instance: ApiClient;
@@ -19,7 +20,7 @@ export class ApiClient {
     axios.defaults.headers.common['Content-Type'] = 'application/json';
   }
 
-  async getAllUsers(): Promise<ApiResponse<User[]>> {
+  async getAllUsers(): Promise<ApiResponse<User[] | ErrorResponse>> {
     try {
       const response: AxiosResponse<User[]> = await axios.get(API_ENDPOINT);
       return {
@@ -28,7 +29,7 @@ export class ApiClient {
         headers: response.headers
       };
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as AxiosError) as ApiResponse<User[] | ErrorResponse>;
     }
   }
 
@@ -74,6 +75,58 @@ export class ApiClient {
   async deleteUser(id: number): Promise<ApiResponse<void | ErrorResponse>> {
     try {
       const response: AxiosResponse<void> = await axios.delete(`${API_ENDPOINT}/${id}`);
+      return {
+        status: response.status,
+        data: response.data,
+        headers: response.headers
+      };
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async getActuatorHealth(): Promise<ApiResponse<any>> {
+    try {
+      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/health`);
+      return {
+        status: response.status,
+        data: response.data,
+        headers: response.headers
+      };
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async getActuatorInfo(): Promise<ApiResponse<any>> {
+    try {
+      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/info`);
+      return {
+        status: response.status,
+        data: response.data,
+        headers: response.headers
+      };
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async getActuatorMetrics(): Promise<ApiResponse<any>> {
+    try {
+      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/metrics`);
+      return {
+        status: response.status,
+        data: response.data,
+        headers: response.headers
+      };
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async getActuatorEndpoint(endpoint: string): Promise<ApiResponse<any>> {
+    try {
+      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/${endpoint}`);
       return {
         status: response.status,
         data: response.data,

@@ -1,7 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../support/world';
 import { User, UserCreateRequest, ErrorResponse } from '../support/types';
-import { expect } from '@cucumber/cucumber';
 
 function assert(condition: any, message?: string): asserts condition {
   if (!condition) {
@@ -108,7 +107,7 @@ When('I delete the user', async function(this: CustomWorld) {
   this.response = await this.apiClient.deleteUser(this.currentUser.id);
 });
 
-When('I try to delete a user with ID {int}', async function(this: CustomWorld) {
+When('I try to delete a user with ID {int}', async function(this: CustomWorld, userId: number) {
   this.response = await this.apiClient.deleteUser(userId);
 });
 

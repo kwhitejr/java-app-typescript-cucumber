@@ -10,7 +10,7 @@
     "build": "tsc",
     "clean": "rimraf dist",
     "start-app": "cd .. && mvn spring-boot:run",
-    "test-with-app": "concurrently \"npm run start-app\" \"wait-on http://localhost:8080/api/users && npm test\""
+    "test-with-app": "concurrently \"npm run start-app\" \"wait-on http://localhost:8080/actuator/health && npm test\""
   },
   "keywords": [
     "cucumber",
