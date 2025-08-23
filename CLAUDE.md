@@ -26,7 +26,7 @@ This is a Java 17 Spring Boot 3.5.x application with a separate TypeScript Cucum
   - `step-definitions/` - TypeScript step implementations
   - `support/` - Test utilities, API client, hooks, world context
 - Tests communicate only through HTTP API calls
-- Uses Cucumber.js with TypeScript for BDD testing
+- Uses Cucumber.js v12.1.0 with TypeScript v5.9.2 for BDD testing
 
 ## Development Commands
 
@@ -94,9 +94,22 @@ This project uses **black box testing** principles:
 - **dev**: Minimal progress output only
 - **ci**: Includes JUnit XML for CI/CD integration, with retry logic
 
+## Dependencies & Versions
+
+**TypeScript Test Suite:**
+- `@cucumber/cucumber`: v12.1.0 (latest)
+- `typescript`: v5.9.2 (latest)
+- `@types/node`: v24.3.0
+- `ts-node`: v10.9.1
+- `axios`: v1.6.2
+- `concurrently`: v9.2.0
+- `wait-on`: v8.0.4
+- `rimraf`: v6.0.1
+
 ## Important Notes
 
 - Application must be running on port 8080 before executing TypeScript tests
 - The `run-tests.sh` script handles the full lifecycle (start app, run tests, cleanup)
 - Tests validate both user CRUD operations and Spring Boot Actuator endpoints
 - Test reports include human-readable HTML and machine-readable JSON/XML formats
+- All dependencies are kept up-to-date with latest stable versions

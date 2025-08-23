@@ -29,6 +29,7 @@ This project demonstrates how to perform **black box testing** of a Java 17 Spri
 ### Java Spring Boot Application Features
 - **Java 17** with **Spring Boot 3.5.x**
 - RESTful API with full CRUD operations
+- **Spring Boot Actuator** for monitoring and management
 - JPA/Hibernate with H2 in-memory database
 - Bean validation with custom error handling
 - Global exception handling
@@ -43,6 +44,7 @@ This project demonstrates how to perform **black box testing** of a Java 17 Spri
   - Error conditions
   - Edge cases
   - Validation testing
+  - Actuator monitoring endpoints
 - Automatic test reporting (JSON, HTML, JUnit XML)
 - Test environment management
 
@@ -81,6 +83,7 @@ mvn clean spring-boot:run
 
 # Application will be available at http://localhost:8080
 # H2 Console available at http://localhost:8080/h2-console
+# Actuator endpoints available at http://localhost:8080/actuator
 ```
 
 #### Run the TypeScript Tests
@@ -100,6 +103,7 @@ npm run test:ci     # CI mode (with JUnit XML reports)
 
 ## 📋 API Endpoints
 
+### User Management API
 The Spring Boot application exposes the following REST endpoints:
 
 | Method | Endpoint | Description |
@@ -109,6 +113,22 @@ The Spring Boot application exposes the following REST endpoints:
 | POST   | `/api/users` | Create new user |
 | PUT    | `/api/users/{id}` | Update existing user |
 | DELETE | `/api/users/{id}` | Delete user |
+
+### Spring Boot Actuator Endpoints
+Monitoring and management endpoints available at `/actuator`:
+
+| Endpoint | Description |
+|----------|-------------|
+| `/actuator/health` | Application health status and component checks |
+| `/actuator/info` | Application information and build details |
+| `/actuator/metrics` | Application metrics and performance data |
+| `/actuator/env` | Environment properties and configuration |
+| `/actuator/beans` | Spring beans and their dependencies |
+| `/actuator/mappings` | Request mappings and handler methods |
+| `/actuator/configprops` | Configuration properties |
+| `/actuator/loggers` | Logger configuration and levels |
+| `/actuator/threaddump` | Thread dump for debugging |
+| `/actuator/heapdump` | Heap dump for memory analysis |
 
 ### Sample User Object
 ```json
@@ -124,22 +144,16 @@ The Spring Boot application exposes the following REST endpoints:
 
 The Cucumber tests cover comprehensive scenarios including:
 
-### Happy Path Testing
-- Creating users with valid data
-- Retrieving individual and multiple users
-- Updating user information
-- Deleting users
+### User API Testing
+- **Happy Path Testing**: Creating, retrieving, updating, and deleting users
+- **Error Condition Testing**: Invalid input validation, duplicate handling, non-existent resources
+- **Edge Cases**: Empty database scenarios, boundary values, data consistency
 
-### Error Condition Testing
-- Invalid input validation (empty names, invalid emails, etc.)
-- Duplicate email handling
-- Non-existent resource access
-- Proper HTTP status codes and error messages
-
-### Edge Cases
-- Empty database scenarios
-- Boundary value testing (string length limits)
-- Data consistency validation
+### Actuator Monitoring Testing  
+- **Health Checks**: Application and component health status verification
+- **Metrics Validation**: JVM metrics, HTTP request metrics, database connection pools
+- **Information Endpoints**: Application metadata and build information
+- **Management Endpoints**: Configuration, beans, mappings, and environment data
 
 ## 📊 Test Reporting
 

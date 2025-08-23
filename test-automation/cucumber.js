@@ -6,7 +6,7 @@ const config = {
       'support/**/*.ts'
     ],
     format: [
-      'progress-bar',
+      'progress',
       'json:reports/cucumber_report.json',
       'html:reports/cucumber_report.html'
     ],
@@ -16,12 +16,12 @@ const config = {
     parallel: 1
   },
   dev: {
-    format: ['progress-bar'],
+    format: ['progress'],
     retry: 0
   },
   ci: {
     format: [
-      'progress-bar',
+      'progress',
       'json:reports/cucumber_report.json',
       'junit:reports/cucumber_report.xml'
     ],
