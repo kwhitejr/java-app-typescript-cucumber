@@ -210,105 +210,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  # Spring Boot Actuator Endpoints
-  /actuator/health:
-    get:
-      tags:
-        - Actuator
-      summary: Application health status
-      description: Get the health status of the application and its components
-      operationId: getHealth
-      responses:
-        '200':
-          description: Health information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthResponse'
-              examples:
-                healthy:
-                  summary: Application is healthy
-                  value:
-                    status: "UP"
-                    components:
-                      db:
-                        status: "UP"
-                      diskSpace:
-                        status: "UP"
-                      ping:
-                        status: "UP"
-        '503':
-          description: Application is unhealthy
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthResponse'
-
-  /actuator/info:
-    get:
-      tags:
-        - Actuator
-      summary: Application information
-      description: Get general information about the application
-      operationId: getInfo
-      responses:
-        '200':
-          description: Application information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InfoResponse'
-              examples:
-                app_info:
-                  summary: Application information
-                  value:
-                    application:
-                      name: "demo"
-                      version: "0.0.1-SNAPSHOT"
-                      description: "Demo project showcasing Java Spring Boot with TypeScript Cucumber black box testing"
-                      java-version: "17"
-
-  /actuator/metrics:
-    get:
-      tags:
-        - Actuator
-      summary: Available metrics
-      description: Get a list of all available metrics
-      operationId: getMetrics
-      responses:
-        '200':
-          description: List of available metrics
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricsResponse'
-
-  /actuator/{endpoint}:
-    get:
-      tags:
-        - Actuator
-      summary: Generic actuator endpoint
-      description: Access various actuator endpoints dynamically
-      operationId: getActuatorEndpoint
-      parameters:
-        - name: endpoint
-          in: path
-          required: true
-          description: The actuator endpoint name
-          schema:
-            type: string
-            enum: [env, beans, mappings, configprops, loggers, threaddump, heapdump]
-          example: env
-      responses:
-        '200':
-          description: Endpoint data
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties: true
-        '404':
-          $ref: '#/components/responses/NotFound'
 
 components:
   schemas:
@@ -408,66 +309,7 @@ components:
         path: "/api/users"
         validationErrors: ["Name is required"]
 
-    HealthResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum: [UP, DOWN, OUT_OF_SERVICE, UNKNOWN]
-          description: Overall health status
-          example: "UP"
-        components:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              status:
-                type: string
-                enum: [UP, DOWN, OUT_OF_SERVICE, UNKNOWN]
-          description: Health status of individual components
-          example:
-            db:
-              status: "UP"
-            diskSpace:
-              status: "UP"
 
-    InfoResponse:
-      type: object
-      properties:
-        application:
-          type: object
-          properties:
-            name:
-              type: string
-              example: "demo"
-            version:
-              type: string
-              example: "0.0.1-SNAPSHOT"
-            description:
-              type: string
-              example: "Demo project showcasing Java Spring Boot"
-            java-version:
-              type: string
-              example: "17"
-        build:
-          type: object
-          properties:
-            artifact:
-              type: string
-              example: "demo"
-            group:
-              type: string
-              example: "com.example"
-
-    MetricsResponse:
-      type: object
-      properties:
-        names:
-          type: array
-          items:
-            type: string
-          description: List of available metric names
-          example: ["jvm.memory.used", "http.server.requests", "system.cpu.usage"]
 
   responses:
     BadRequest:
@@ -550,5 +392,3 @@ components:
 tags:
   - name: Users
     description: User management operations
-  - name: Actuator
-    description: Spring Boot Actuator monitoring endpoints

@@ -8,6 +8,17 @@ import {
   ErrorResponse as GeneratedErrorResponse 
 } from '../generated';
 
+// Manual actuator types (not included in OpenAPI spec as they are boilerplate)
+export interface HealthResponse {
+  status: 'UP' | 'DOWN' | 'OUT_OF_SERVICE' | 'UNKNOWN';
+  components?: {
+    [componentName: string]: {
+      status: 'UP' | 'DOWN' | 'OUT_OF_SERVICE' | 'UNKNOWN';
+      [additionalProperty: string]: any;
+    };
+  };
+}
+
 // Enhanced types with test-specific extensions
 export interface EnhancedUserResponse extends GeneratedUserResponse {
   // Add any test-specific properties or methods

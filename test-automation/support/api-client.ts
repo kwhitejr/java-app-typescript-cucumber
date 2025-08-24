@@ -98,44 +98,6 @@ export class ApiClient {
     }
   }
 
-  async getActuatorInfo(): Promise<ApiResponse<any>> {
-    try {
-      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/info`);
-      return {
-        status: response.status,
-        data: response.data,
-        headers: this.convertHeaders(response.headers)
-      };
-    } catch (error) {
-      return this.handleError(error as AxiosError);
-    }
-  }
-
-  async getActuatorMetrics(): Promise<ApiResponse<any>> {
-    try {
-      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/metrics`);
-      return {
-        status: response.status,
-        data: response.data,
-        headers: this.convertHeaders(response.headers)
-      };
-    } catch (error) {
-      return this.handleError(error as AxiosError);
-    }
-  }
-
-  async getActuatorEndpoint(endpoint: string): Promise<ApiResponse<any>> {
-    try {
-      const response: AxiosResponse<any> = await axios.get(`${ACTUATOR_ENDPOINT}/${endpoint}`);
-      return {
-        status: response.status,
-        data: response.data,
-        headers: this.convertHeaders(response.headers)
-      };
-    } catch (error) {
-      return this.handleError(error as AxiosError);
-    }
-  }
 
   async healthCheck(): Promise<boolean> {
     try {
