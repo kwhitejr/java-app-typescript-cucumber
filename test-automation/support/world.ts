@@ -22,20 +22,6 @@ export class CustomWorld extends World implements TestContext {
     tags?: string[];
   };
 
-  // Legacy support - delegate to new ApiGateway with proper types
-  public get apiClient() {
-    // Create a compatibility layer for existing tests
-    return {
-      getAllUsers: () => this.apiGateway.getAllUsersCompat(),
-      getUserById: (id: number) => this.apiGateway.getUserByIdCompat(id),
-      createUser: (userData: UserCreateRequest) => this.apiGateway.createUserCompat(userData),
-      updateUser: (id: number, userData: UserCreateRequest) => this.apiGateway.updateUserCompat(id, userData),
-      deleteUser: (id: number) => this.apiGateway.deleteUserCompat(id),
-      getActuatorHealth: () => this.apiGateway.getHealthCompat(),
-      healthCheck: () => this.apiGateway.isHealthy(),
-      waitForApi: (maxRetries?: number, intervalMs?: number) => this.apiGateway.waitForHealthy((maxRetries || 30) * (intervalMs || 1000))
-    };
-  }
 
   constructor(options: IWorldOptions) {
     super(options);

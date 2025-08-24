@@ -9,18 +9,18 @@ function assert(condition: unknown, message?: string): asserts condition {
 }
 
 Given('the User API is running', async function(this: CustomWorld) {
-  const isHealthy = await this.apiClient.healthCheck();
+  const isHealthy = await this.apiGateway.isHealthy();
   assert(isHealthy, 'User API is not running or not accessible');
 });
 
 Given('the database is clean', async function(this: CustomWorld) {
-  const response = await this.apiClient.getAllUsers();
+  const response = await this.apiGateway.getAllUsersCompat();
   assert(response.status === 200, `Failed to check database state: ${response.status}`);
   
   const users = response.data as UserResponse[];
   for (const user of users) {
     if (user.id) {
-      await this.apiClient.deleteUser(user.id);
+      await this.apiGateway.deleteUserCompat(user.id);
     }
   }
 });
@@ -50,7 +50,7 @@ Given('a user exists with name {string} and email {string}', async function(this
     bio: 'Test user bio'
   };
   
-  const response = await this.apiClient.createUser(userData);
+  const response = await this.apiGateway.createUserCompat(userData);
   assert(response.status === 201, `Failed to create test user: ${response.status}`);
   
   this.currentUser = response.data as UserResponse;
@@ -58,12 +58,12 @@ Given('a user exists with name {string} and email {string}', async function(this
 });
 
 When('I request all users', async function(this: CustomWorld) {
-  this.response = await this.apiClient.getAllUsers();
+  this.response = await this.apiGateway.getAllUsersCompat();
 });
 
 When('I create a new user', async function(this: CustomWorld) {
   assert(this.userData, 'No user data provided');
-  this.response = await this.apiClient.createUser(this.userData);
+  this.response = await this.apiGateway.createUserCompat(this.userData);
   
   if (this.response.status === 201) {
     this.addCreatedUser(this.response.data as UserResponse);
@@ -72,11 +72,11 @@ When('I create a new user', async function(this: CustomWorld) {
 
 When('I request the user by ID', async function(this: CustomWorld) {
   assert(this.currentUser?.id, 'No current user ID available');
-  this.response = await this.apiClient.getUserById(this.currentUser.id);
+  this.response = await this.apiGateway.getUserByIdCompat(this.currentUser.id);
 });
 
 When('I request a user with ID {int}', async function(this: CustomWorld, userId: number) {
-  this.response = await this.apiClient.getUserById(userId);
+  this.response = await this.apiGateway.getUserByIdCompat(userId);
 });
 
 When('I update the user with:', async function(this: CustomWorld, dataTable) {
@@ -89,7 +89,7 @@ When('I update the user with:', async function(this: CustomWorld, dataTable) {
     bio: updateData.bio || undefined
   };
   
-  this.response = await this.apiClient.updateUser(this.currentUser.id, userData);
+  this.response = await this.apiGateway.updateUserCompat(this.currentUser.id, userData);
 });
 
 When('I try to update a user with ID {int}', async function(this: CustomWorld, userId: number) {
@@ -99,16 +99,16 @@ When('I try to update a user with ID {int}', async function(this: CustomWorld, u
     bio: 'Updated bio'
   };
   
-  this.response = await this.apiClient.updateUser(userId, userData);
+  this.response = await this.apiGateway.updateUserCompat(userId, userData);
 });
 
 When('I delete the user', async function(this: CustomWorld) {
   assert(this.currentUser?.id, 'No current user ID available');
-  this.response = await this.apiClient.deleteUser(this.currentUser.id);
+  this.response = await this.apiGateway.deleteUserCompat(this.currentUser.id);
 });
 
 When('I try to delete a user with ID {int}', async function(this: CustomWorld, userId: number) {
-  this.response = await this.apiClient.deleteUser(userId);
+  this.response = await this.apiGateway.deleteUserCompat(userId);
 });
 
 When('I try to create another user with email {string}', async function(this: CustomWorld, email: string) {
@@ -118,7 +118,7 @@ When('I try to create another user with email {string}', async function(this: Cu
     bio: 'Another user bio'
   };
   
-  this.response = await this.apiClient.createUser(userData);
+  this.response = await this.apiGateway.createUserCompat(userData);
 });
 
 Then('the response status should be {int}', function(this: CustomWorld, expectedStatus: number) {

@@ -9,12 +9,12 @@ function assert(condition: unknown, message?: string): asserts condition {
 }
 
 Given('the Application is running', async function(this: CustomWorld) {
-  const isHealthy = await this.apiClient.healthCheck();
+  const isHealthy = await this.apiGateway.isHealthy();
   assert(isHealthy, 'Application is not running or not accessible');
 });
 
 When('I request the health endpoint', async function(this: CustomWorld) {
-  this.response = await this.apiClient.getActuatorHealth();
+  this.response = await this.apiGateway.getHealthCompat();
 });
 
 Then('the health status should be {string}', function(this: CustomWorld, expectedStatus: string) {
