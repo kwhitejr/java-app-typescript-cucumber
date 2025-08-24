@@ -1,0 +1,18 @@
+{
+  "npmName": "user-api-generated-client",
+  "npmVersion": "1.0.0",
+  "typescriptThreePlus": true,
+  "supportsES6": true,
+  "withInterfaces": true,
+  "useSingleRequestParameter": false,
+  "withSeparateModelsAndApi": true,
+  "modelPackage": "models",
+  "apiPackage": "apis",
+  "enumNameSuffix": "Enum",
+  "enumPropertyNaming": "UPPERCASE",
+  "modelPropertyNaming": "camelCase",
+  "paramNaming": "camelCase",
+  "stringEnums": false,
+  "snapshot": false,
+  "withoutRuntimeChecks": true
+}

@@ -39,6 +39,11 @@ This project demonstrates how to perform **black box testing** of a Java 17 Spri
 - **Black box testing** approach - no internal code knowledge
 - **Behavior-Driven Development (BDD)** with Gherkin scenarios
 - **TypeScript** for type safety and better maintainability
+- **OpenAPI Code Generation** - types and clients generated from OpenAPI spec
+  - Single source of truth for API contracts
+  - Automatic TypeScript type generation
+  - Built-in compatibility with existing test code
+  - Centralized ApiGateway architecture combining generated and custom clients
 - Comprehensive API testing covering:
   - Happy path scenarios
   - Error conditions

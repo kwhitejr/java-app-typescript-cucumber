@@ -7,10 +7,12 @@
     "test": "cucumber-js",
     "test:dev": "cucumber-js --profile dev",
     "test:ci": "cucumber-js --profile ci",
-    "build": "tsc",
-    "clean": "rimraf dist",
+    "build": "npm run generate:api && tsc",
+    "clean": "rimraf dist generated",
     "start-app": "cd .. && mvn spring-boot:run",
-    "test-with-app": "concurrently --kill-others --success first \"npm run start-app\" \"wait-on http://localhost:8080/actuator/health && npm test\""
+    "test-with-app": "concurrently --kill-others --success first \"npm run start-app\" \"wait-on http://localhost:8080/actuator/health && npm test\"",
+    "generate:api": "openapi-generator-cli generate -i ../openapi.yaml -g typescript-axios -o generated --additional-properties=configFile=openapi-generator-config.json",
+    "postinstall": "npm run generate:api"
   },
   "keywords": [
     "cucumber",
@@ -23,6 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "@cucumber/cucumber": "^12.1.0",
+    "@openapitools/openapi-generator-cli": "^2.23.0",
     "@types/node": "^24.3.0",
     "axios": "^1.6.2",
     "concurrently": "^9.2.0",

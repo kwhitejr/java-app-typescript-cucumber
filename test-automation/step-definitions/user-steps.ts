@@ -1,8 +1,8 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../support/world';
-import { User, UserCreateRequest, ErrorResponse } from '../support/types';
+import { UserResponse, UserCreateRequest, ErrorResponse } from '../support/enhanced-types';
 
-function assert(condition: any, message?: string): asserts condition {
+function assert(condition: unknown, message?: string): asserts condition {
   if (!condition) {
     throw new Error(message || 'Assertion failed');
   }
@@ -17,7 +17,7 @@ Given('the database is clean', async function(this: CustomWorld) {
   const response = await this.apiClient.getAllUsers();
   assert(response.status === 200, `Failed to check database state: ${response.status}`);
   
-  const users = response.data as User[];
+  const users = response.data as UserResponse[];
   for (const user of users) {
     if (user.id) {
       await this.apiClient.deleteUser(user.id);
@@ -53,7 +53,7 @@ Given('a user exists with name {string} and email {string}', async function(this
   const response = await this.apiClient.createUser(userData);
   assert(response.status === 201, `Failed to create test user: ${response.status}`);
   
-  this.currentUser = response.data as User;
+  this.currentUser = response.data as UserResponse;
   this.addCreatedUser(this.currentUser);
 });
 
@@ -66,7 +66,7 @@ When('I create a new user', async function(this: CustomWorld) {
   this.response = await this.apiClient.createUser(this.userData);
   
   if (this.response.status === 201) {
-    this.addCreatedUser(this.response.data);
+    this.addCreatedUser(this.response.data as UserResponse);
   }
 });
 
@@ -137,7 +137,7 @@ Then('the response should contain the user data', function(this: CustomWorld) {
   assert(this.response, 'No response available');
   assert(this.userData, 'No user data to compare against');
   
-  const responseUser = this.response.data as User;
+  const responseUser = this.response.data as UserResponse;
   assert(responseUser.name === this.userData.name, `Expected name ${this.userData.name}, got ${responseUser.name}`);
   assert(responseUser.email === this.userData.email, `Expected email ${this.userData.email}, got ${responseUser.email}`);
   
@@ -149,7 +149,7 @@ Then('the response should contain the user data', function(this: CustomWorld) {
 Then('the user should have a generated ID', function(this: CustomWorld) {
   assert(this.response, 'No response available');
   
-  const responseUser = this.response.data as User;
+  const responseUser = this.response.data as UserResponse;
   assert(responseUser.id, 'User should have an ID');
   assert(typeof responseUser.id === 'number', 'User ID should be a number');
   assert(responseUser.id > 0, 'User ID should be positive');
@@ -165,14 +165,14 @@ Then('the response should contain {int} user(s)', function(this: CustomWorld, ex
 Then('the response should contain the user {string}', function(this: CustomWorld, expectedName: string) {
   assert(this.response, 'No response available');
   
-  const responseUser = this.response.data as User;
+  const responseUser = this.response.data as UserResponse;
   assert(responseUser.name === expectedName, `Expected user name ${expectedName}, got ${responseUser.name}`);
 });
 
 Then('the response should contain the updated user data', function(this: CustomWorld) {
   assert(this.response, 'No response available');
   
-  const responseUser = this.response.data as User;
+  const responseUser = this.response.data as UserResponse;
   assert(responseUser.id === this.currentUser?.id, 'User ID should remain the same');
   assert(responseUser.name === 'Updated Name', 'User name should be updated');
   assert(responseUser.email === 'updated@example.com', 'User email should be updated');
@@ -193,7 +193,7 @@ Then('the response should contain a conflict error message', function(this: Cust
   
   const errorResponse = this.response.data as ErrorResponse;
   assert(errorResponse.error === 'Conflict', 'Expected conflict error');
-  assert(errorResponse.message.includes('already exists'), 'Expected duplicate email error message');
+  assert(errorResponse.message && errorResponse.message.includes('already exists'), 'Expected duplicate email error message');
 });
 
 Then('the response should contain a not found error message', function(this: CustomWorld) {
@@ -201,5 +201,5 @@ Then('the response should contain a not found error message', function(this: Cus
   
   const errorResponse = this.response.data as ErrorResponse;
   assert(errorResponse.error === 'Not Found', 'Expected not found error');
-  assert(errorResponse.message.includes('not found'), 'Expected not found error message');
+  assert(errorResponse.message && errorResponse.message.includes('not found'), 'Expected not found error message');
 });

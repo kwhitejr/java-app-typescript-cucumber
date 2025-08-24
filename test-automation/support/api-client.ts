@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { User, UserCreateRequest, ApiResponse, ErrorResponse } from './types';
+import { UserResponse, UserCreateRequest, ApiResponse, ErrorResponse } from './types';
 
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
 const API_ENDPOINT = `${BASE_URL}/api/users`;
@@ -20,65 +20,65 @@ export class ApiClient {
     axios.defaults.headers.common['Content-Type'] = 'application/json';
   }
 
-  async getAllUsers(): Promise<ApiResponse<User[] | ErrorResponse>> {
+  async getAllUsers(): Promise<ApiResponse<UserResponse[] | ErrorResponse>> {
     try {
-      const response: AxiosResponse<User[]> = await axios.get(API_ENDPOINT);
+      const response: AxiosResponse<UserResponse[]> = await axios.get(API_ENDPOINT);
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
-      return this.handleError(error as AxiosError) as ApiResponse<User[] | ErrorResponse>;
+      return this.handleError(error as AxiosError) as ApiResponse<UserResponse[] | ErrorResponse>;
     }
   }
 
-  async getUserById(id: number): Promise<ApiResponse<User | ErrorResponse>> {
+  async getUserResponseById(id: number): Promise<ApiResponse<UserResponse | ErrorResponse>> {
     try {
-      const response: AxiosResponse<User> = await axios.get(`${API_ENDPOINT}/${id}`);
+      const response: AxiosResponse<UserResponse> = await axios.get(`${API_ENDPOINT}/${id}`);
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
-      };
-    } catch (error) {
-      return this.handleError(error as AxiosError);
-    }
-  }
-
-  async createUser(userData: UserCreateRequest): Promise<ApiResponse<User | ErrorResponse>> {
-    try {
-      const response: AxiosResponse<User> = await axios.post(API_ENDPOINT, userData);
-      return {
-        status: response.status,
-        data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
     }
   }
 
-  async updateUser(id: number, userData: UserCreateRequest): Promise<ApiResponse<User | ErrorResponse>> {
+  async createUserResponse(userData: UserCreateRequest): Promise<ApiResponse<UserResponse | ErrorResponse>> {
     try {
-      const response: AxiosResponse<User> = await axios.put(`${API_ENDPOINT}/${id}`, userData);
+      const response: AxiosResponse<UserResponse> = await axios.post(API_ENDPOINT, userData);
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
     }
   }
 
-  async deleteUser(id: number): Promise<ApiResponse<void | ErrorResponse>> {
+  async updateUserResponse(id: number, userData: UserCreateRequest): Promise<ApiResponse<UserResponse | ErrorResponse>> {
+    try {
+      const response: AxiosResponse<UserResponse> = await axios.put(`${API_ENDPOINT}/${id}`, userData);
+      return {
+        status: response.status,
+        data: response.data,
+        headers: this.convertHeaders(response.headers)
+      };
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async deleteUserResponse(id: number): Promise<ApiResponse<void | ErrorResponse>> {
     try {
       const response: AxiosResponse<void> = await axios.delete(`${API_ENDPOINT}/${id}`);
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
@@ -91,7 +91,7 @@ export class ApiClient {
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
@@ -104,7 +104,7 @@ export class ApiClient {
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
@@ -117,7 +117,7 @@ export class ApiClient {
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
@@ -130,7 +130,7 @@ export class ApiClient {
       return {
         status: response.status,
         data: response.data,
-        headers: response.headers
+        headers: this.convertHeaders(response.headers)
       };
     } catch (error) {
       return this.handleError(error as AxiosError);
@@ -162,12 +162,22 @@ export class ApiClient {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  private convertHeaders(axiosHeaders: any): Record<string, string | number | boolean> {
+    const headers: Record<string, string | number | boolean> = {};
+    for (const [key, value] of Object.entries(axiosHeaders || {})) {
+      if (value !== undefined && value !== null) {
+        headers[key] = String(value);
+      }
+    }
+    return headers;
+  }
+
   private handleError(error: AxiosError): ApiResponse<ErrorResponse> {
     if (error.response) {
       return {
         status: error.response.status,
         data: error.response.data as ErrorResponse,
-        headers: error.response.headers
+        headers: this.convertHeaders(error.response.headers)
       };
     } else if (error.request) {
       return {

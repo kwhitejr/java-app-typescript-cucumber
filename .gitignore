@@ -87,6 +87,9 @@ test-automation/reports/*.xml
 # TypeScript compiled output
 test-automation/dist/
 
+# OpenAPI generated code
+test-automation/generated/
+
 # IDE files
 .vscode/
 .idea/

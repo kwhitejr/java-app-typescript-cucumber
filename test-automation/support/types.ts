@@ -1,34 +1,34 @@
-export interface User {
-  id?: number;
-  name: string;
-  email: string;
-  bio?: string;
-}
+// Import and re-export generated types for convenience
+import type { 
+  UserResponse, 
+  UserCreateRequest, 
+  ErrorResponse,
+  HealthResponse,
+  InfoResponse,
+  MetricsResponse
+} from '../generated';
 
-export interface UserCreateRequest {
-  name: string;
-  email: string;
-  bio?: string;
-}
+export type { 
+  UserResponse, 
+  UserCreateRequest, 
+  ErrorResponse,
+  HealthResponse,
+  InfoResponse,
+  MetricsResponse
+};
 
-export interface ErrorResponse {
-  timestamp: string;
-  status: number;
-  error: string;
-  message: string;
-  path: string;
-  validationErrors?: string[];
-}
-
-export interface ApiResponse<T = any> {
+// Enhanced API response wrapper
+export interface ApiResponse<T = unknown> {
   status: number;
   data: T;
-  headers: any;
+  headers: Record<string, string | number | boolean>;
 }
 
+// Test-specific context interface using generated types
 export interface TestContext {
-  response?: ApiResponse;
-  currentUser?: User;
-  createdUsers: User[];
+  response?: ApiResponse<unknown>;
+  currentUser?: UserResponse;
+  createdUsers: UserResponse[];
   lastError?: ErrorResponse;
+  userData?: UserCreateRequest;
 }
