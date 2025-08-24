@@ -2,19 +2,19 @@
 import type { 
   UserResponse, 
   UserCreateRequest, 
-  ErrorResponse,
-  HealthResponse,
-  InfoResponse,
-  MetricsResponse
+  ErrorResponse
 } from '../generated';
+
+// Import manual types for actuator endpoints (not in OpenAPI spec)
+import type {
+  HealthResponse
+} from './enhanced-types';
 
 export type { 
   UserResponse, 
   UserCreateRequest, 
   ErrorResponse,
-  HealthResponse,
-  InfoResponse,
-  MetricsResponse
+  HealthResponse
 };
 
 // Enhanced API response wrapper

@@ -1,5 +1,7 @@
 import { AxiosResponse, AxiosError } from 'axios';
-import { Configuration, UsersApi, ActuatorApi, UserResponse, UserCreateRequest, HealthResponse, InfoResponse, MetricsResponse, GetActuatorEndpointEndpointEnum } from '../generated';
+import axios from 'axios';
+import { Configuration, UsersApi, UserResponse, UserCreateRequest } from '../generated';
+import { HealthResponse } from './enhanced-types';
 import { UserQueryBuilder } from './builders/user-query-builder';
 import { TestHelperBuilder } from './builders/test-helper-builder';
 import { BuilderConfig } from './builders/base-builder';
@@ -17,7 +19,6 @@ export interface ApiGatewayConfig {
 export class ApiGateway {
   // Generated API clients
   public readonly users: UsersApi;
-  public readonly actuator: ActuatorApi;
 
   // Builder-based clients for complex operations
   public readonly userQueries: UserQueryBuilder;
@@ -40,7 +41,6 @@ export class ApiGateway {
     });
 
     this.users = new UsersApi(openApiConfig);
-    this.actuator = new ActuatorApi(openApiConfig);
 
     // Configure builder clients
     const builderConfig: BuilderConfig = {
@@ -62,7 +62,7 @@ export class ApiGateway {
   // Convenience methods for common operations
   async isHealthy(): Promise<boolean> {
     try {
-      const response = await this.actuator.getHealth();
+      const response = await axios.get(`${this.config.baseURL}/actuator/health`, { timeout: 5000 });
       return response.status === 200 && response.data.status === 'UP';
     } catch {
       return false;
@@ -73,14 +73,6 @@ export class ApiGateway {
     return this.testHelpers.waitForHealthy(timeout);
   }
 
-  async getApplicationInfo(): Promise<any> {
-    try {
-      const response = await this.actuator.getInfo();
-      return response.status === 200 ? response.data : null;
-    } catch {
-      return null;
-    }
-  }
 
   // Compatibility adapters that convert AxiosResponse to BuilderResponse
   private convertAxiosResponse<T>(axiosResponse: AxiosResponse<T>): BuilderResponse<T> {
@@ -186,39 +178,15 @@ export class ApiGateway {
 
   async getHealthCompat(): Promise<BuilderResponse<HealthResponse>> {
     try {
-      const axiosResponse = await this.actuator.getHealth();
+      const axiosResponse = await axios.get(`${this.config.baseURL}/actuator/health`);
       return this.convertAxiosResponse(axiosResponse);
     } catch (error) {
       return this.handleAxiosError(error);
     }
   }
 
-  async getInfoCompat(): Promise<BuilderResponse<InfoResponse>> {
-    try {
-      const axiosResponse = await this.actuator.getInfo();
-      return this.convertAxiosResponse(axiosResponse);
-    } catch (error) {
-      return this.handleAxiosError(error);
-    }
-  }
 
-  async getMetricsCompat(): Promise<BuilderResponse<MetricsResponse>> {
-    try {
-      const axiosResponse = await this.actuator.getMetrics();
-      return this.convertAxiosResponse(axiosResponse);
-    } catch (error) {
-      return this.handleAxiosError(error);
-    }
-  }
 
-  async getActuatorEndpointCompat(endpoint: string): Promise<BuilderResponse<any>> {
-    try {
-      const axiosResponse = await this.actuator.getActuatorEndpoint(endpoint as GetActuatorEndpointEndpointEnum);
-      return this.convertAxiosResponse(axiosResponse);
-    } catch (error) {
-      return this.handleAxiosError(error);
-    }
-  }
 
   // Test lifecycle management
   async setupTest(description?: string): Promise<void> {
@@ -334,15 +302,14 @@ export class ApiGateway {
     const timestamp = new Date().toISOString();
     
     try {
-      const [healthy, info, dbState] = await Promise.allSettled([
+      const [healthy, dbState] = await Promise.allSettled([
         this.isHealthy(),
-        this.getApplicationInfo(),
         this.testHelpers.getDatabaseState()
       ]);
 
       return {
         healthy: healthy.status === 'fulfilled' ? healthy.value : false,
-        info: info.status === 'fulfilled' ? info.value : null,
+        info: null,
         userCount: dbState.status === 'fulfilled' ? dbState.value.userCount : -1,
         timestamp
       };

@@ -32,9 +32,6 @@ export class CustomWorld extends World implements TestContext {
       updateUser: (id: number, userData: UserCreateRequest) => this.apiGateway.updateUserCompat(id, userData),
       deleteUser: (id: number) => this.apiGateway.deleteUserCompat(id),
       getActuatorHealth: () => this.apiGateway.getHealthCompat(),
-      getActuatorInfo: () => this.apiGateway.getInfoCompat(),
-      getActuatorMetrics: () => this.apiGateway.getMetricsCompat(),
-      getActuatorEndpoint: (endpoint: string) => this.apiGateway.getActuatorEndpointCompat(endpoint),
       healthCheck: () => this.apiGateway.isHealthy(),
       waitForApi: (maxRetries?: number, intervalMs?: number) => this.apiGateway.waitForHealthy((maxRetries || 30) * (intervalMs || 1000))
     };
