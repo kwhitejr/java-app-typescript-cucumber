@@ -1,16 +1,11 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../support/world';
 import { HealthResponse } from '../support/enhanced-types';
-
-function assert(condition: unknown, message?: string): asserts condition {
-  if (!condition) {
-    throw new Error(message || 'Assertion failed');
-  }
-}
+import { expect } from 'chai';
 
 Given('the Application is running', async function(this: CustomWorld) {
   const isHealthy = await this.apiGateway.isHealthy();
-  assert(isHealthy, 'Application is not running or not accessible');
+  expect(isHealthy).to.be.true;
 });
 
 When('I request the health endpoint', async function(this: CustomWorld) {
@@ -18,33 +13,28 @@ When('I request the health endpoint', async function(this: CustomWorld) {
 });
 
 Then('the health status should be {string}', function(this: CustomWorld, expectedStatus: string) {
-  assert(this.response, 'No response available');
-  const healthData = this.response.data as HealthResponse;
-  assert(healthData.status === expectedStatus, 
-    `Expected health status ${expectedStatus}, but got ${healthData.status}`);
+  expect(this.response).to.exist;
+  const healthData = this.response!.data as HealthResponse;
+  expect(healthData).to.have.property('status').that.equals(expectedStatus);
 });
 
 Then('the health response should contain components', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
-  const healthData = this.response.data as HealthResponse;
-  assert(healthData.components, 'Health response should contain components');
-  assert(typeof healthData.components === 'object', 'Components should be an object');
+  expect(this.response).to.exist;
+  const healthData = this.response!.data as HealthResponse;
+  expect(healthData).to.have.property('components').that.is.an('object');
 });
 
 
 Then('the health components should include {string}', function(this: CustomWorld, componentName: string) {
-  assert(this.response, 'No response available');
-  const healthData = this.response.data as HealthResponse;
-  assert(healthData.components, 'Health response should contain components');
-  assert(healthData.components?.[componentName], 
-    `Health components should include ${componentName}`);
+  expect(this.response).to.exist;
+  const healthData = this.response!.data as HealthResponse;
+  expect(healthData).to.have.property('components');
+  expect(healthData.components).to.have.property(componentName);
 });
 
 Then('the database component status should be {string}', function(this: CustomWorld, expectedStatus: string) {
-  assert(this.response, 'No response available');
-  const healthData = this.response.data as HealthResponse;
-  assert(healthData.components?.db, 'Health response should contain db component');
-  assert(healthData.components.db.status === expectedStatus,
-    `Expected database status ${expectedStatus}, but got ${healthData.components.db.status}`);
+  expect(this.response).to.exist;
+  const healthData = this.response!.data as HealthResponse;
+  expect(healthData).to.have.deep.nested.property('components.db.status').that.equals(expectedStatus);
 });
 

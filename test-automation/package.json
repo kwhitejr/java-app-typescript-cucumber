@@ -26,8 +26,10 @@
   "devDependencies": {
     "@cucumber/cucumber": "^12.1.0",
     "@openapitools/openapi-generator-cli": "^2.23.0",
+    "@types/chai": "^5.2.2",
     "@types/node": "^24.3.0",
     "axios": "^1.6.2",
+    "chai": "^6.0.1",
     "concurrently": "^9.2.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.1",

@@ -1,21 +1,16 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../support/world';
 import { UserResponse, UserCreateRequest, ErrorResponse } from '../support/enhanced-types';
-
-function assert(condition: unknown, message?: string): asserts condition {
-  if (!condition) {
-    throw new Error(message || 'Assertion failed');
-  }
-}
+import { expect } from 'chai';
 
 Given('the User API is running', async function(this: CustomWorld) {
   const isHealthy = await this.apiGateway.isHealthy();
-  assert(isHealthy, 'User API is not running or not accessible');
+  expect(isHealthy).to.be.true;
 });
 
 Given('the database is clean', async function(this: CustomWorld) {
   const response = await this.apiGateway.getAllUsersCompat();
-  assert(response.status === 200, `Failed to check database state: ${response.status}`);
+  expect(response.status).to.equal(200);
   
   const users = response.data as UserResponse[];
   for (const user of users) {
@@ -51,7 +46,7 @@ Given('a user exists with name {string} and email {string}', async function(this
   };
   
   const response = await this.apiGateway.createUserCompat(userData);
-  assert(response.status === 201, `Failed to create test user: ${response.status}`);
+  expect(response.status).to.equal(201);
   
   this.currentUser = response.data as UserResponse;
   this.addCreatedUser(this.currentUser);
@@ -62,8 +57,8 @@ When('I request all users', async function(this: CustomWorld) {
 });
 
 When('I create a new user', async function(this: CustomWorld) {
-  assert(this.userData, 'No user data provided');
-  this.response = await this.apiGateway.createUserCompat(this.userData);
+  expect(this.userData).to.exist;
+  this.response = await this.apiGateway.createUserCompat(this.userData!);
   
   if (this.response.status === 201) {
     this.addCreatedUser(this.response.data as UserResponse);
@@ -71,8 +66,8 @@ When('I create a new user', async function(this: CustomWorld) {
 });
 
 When('I request the user by ID', async function(this: CustomWorld) {
-  assert(this.currentUser?.id, 'No current user ID available');
-  this.response = await this.apiGateway.getUserByIdCompat(this.currentUser.id);
+  expect(this.currentUser?.id).to.exist;
+  this.response = await this.apiGateway.getUserByIdCompat(this.currentUser!.id!);
 });
 
 When('I request a user with ID {int}', async function(this: CustomWorld, userId: number) {
@@ -80,7 +75,7 @@ When('I request a user with ID {int}', async function(this: CustomWorld, userId:
 });
 
 When('I update the user with:', async function(this: CustomWorld, dataTable) {
-  assert(this.currentUser?.id, 'No current user ID available');
+  expect(this.currentUser?.id).to.exist;
   
   const updateData = dataTable.hashes()[0];
   const userData: UserCreateRequest = {
@@ -89,7 +84,7 @@ When('I update the user with:', async function(this: CustomWorld, dataTable) {
     bio: updateData.bio || undefined
   };
   
-  this.response = await this.apiGateway.updateUserCompat(this.currentUser.id, userData);
+  this.response = await this.apiGateway.updateUserCompat(this.currentUser!.id!, userData);
 });
 
 When('I try to update a user with ID {int}', async function(this: CustomWorld, userId: number) {
@@ -103,8 +98,8 @@ When('I try to update a user with ID {int}', async function(this: CustomWorld, u
 });
 
 When('I delete the user', async function(this: CustomWorld) {
-  assert(this.currentUser?.id, 'No current user ID available');
-  this.response = await this.apiGateway.deleteUserCompat(this.currentUser.id);
+  expect(this.currentUser?.id).to.exist;
+  this.response = await this.apiGateway.deleteUserCompat(this.currentUser!.id!);
 });
 
 When('I try to delete a user with ID {int}', async function(this: CustomWorld, userId: number) {
@@ -122,84 +117,77 @@ When('I try to create another user with email {string}', async function(this: Cu
 });
 
 Then('the response status should be {int}', function(this: CustomWorld, expectedStatus: number) {
-  assert(this.response, 'No response available');
-  assert(this.response.status === expectedStatus, 
-    `Expected status ${expectedStatus}, but got ${this.response.status}. Response: ${JSON.stringify(this.response.data)}`);
+  expect(this.response).to.exist;
+  expect(this.response!.status).to.equal(expectedStatus);
 });
 
 Then('the response should contain an empty list', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
-  assert(Array.isArray(this.response.data), 'Response data is not an array');
-  assert(this.response.data.length === 0, `Expected empty array, but got ${this.response.data.length} items`);
+  expect(this.response).to.exist;
+  expect(this.response!.data).to.be.an('array').that.is.empty;
 });
 
 Then('the response should contain the user data', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
-  assert(this.userData, 'No user data to compare against');
+  expect(this.response).to.exist;
+  expect(this.userData).to.exist;
   
-  const responseUser = this.response.data as UserResponse;
-  assert(responseUser.name === this.userData.name, `Expected name ${this.userData.name}, got ${responseUser.name}`);
-  assert(responseUser.email === this.userData.email, `Expected email ${this.userData.email}, got ${responseUser.email}`);
+  const responseUser = this.response!.data as UserResponse;
+  expect(responseUser).to.have.property('name').that.equals(this.userData!.name);
+  expect(responseUser).to.have.property('email').that.equals(this.userData!.email);
   
-  if (this.userData.bio) {
-    assert(responseUser.bio === this.userData.bio, `Expected bio ${this.userData.bio}, got ${responseUser.bio}`);
+  if (this.userData!.bio) {
+    expect(responseUser).to.have.property('bio').that.equals(this.userData!.bio);
   }
 });
 
 Then('the user should have a generated ID', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
+  expect(this.response).to.exist;
   
-  const responseUser = this.response.data as UserResponse;
-  assert(responseUser.id, 'User should have an ID');
-  assert(typeof responseUser.id === 'number', 'User ID should be a number');
-  assert(responseUser.id > 0, 'User ID should be positive');
+  const responseUser = this.response!.data as UserResponse;
+  expect(responseUser).to.have.property('id').that.is.a('number').and.is.greaterThan(0);
 });
 
 Then('the response should contain {int} user(s)', function(this: CustomWorld, expectedCount: number) {
-  assert(this.response, 'No response available');
-  assert(Array.isArray(this.response.data), 'Response data is not an array');
-  assert(this.response.data.length === expectedCount, 
-    `Expected ${expectedCount} users, but got ${this.response.data.length}`);
+  expect(this.response).to.exist;
+  expect(this.response!.data).to.be.an('array').with.lengthOf(expectedCount);
 });
 
 Then('the response should contain the user {string}', function(this: CustomWorld, expectedName: string) {
-  assert(this.response, 'No response available');
+  expect(this.response).to.exist;
   
-  const responseUser = this.response.data as UserResponse;
-  assert(responseUser.name === expectedName, `Expected user name ${expectedName}, got ${responseUser.name}`);
+  const responseUser = this.response!.data as UserResponse;
+  expect(responseUser).to.have.property('name').that.equals(expectedName);
 });
 
 Then('the response should contain the updated user data', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
+  expect(this.response).to.exist;
   
-  const responseUser = this.response.data as UserResponse;
-  assert(responseUser.id === this.currentUser?.id, 'User ID should remain the same');
-  assert(responseUser.name === 'Updated Name', 'User name should be updated');
-  assert(responseUser.email === 'updated@example.com', 'User email should be updated');
-  assert(responseUser.bio === 'Updated bio', 'User bio should be updated');
+  const responseUser = this.response!.data as UserResponse;
+  expect(responseUser).to.have.property('id').that.equals(this.currentUser?.id);
+  expect(responseUser).to.have.property('name').that.equals('Updated Name');
+  expect(responseUser).to.have.property('email').that.equals('updated@example.com');
+  expect(responseUser).to.have.property('bio').that.equals('Updated bio');
 });
 
 Then('the response should contain validation errors', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
+  expect(this.response).to.exist;
   
-  const errorResponse = this.response.data as ErrorResponse;
-  assert(errorResponse.error === 'Validation Failed', 'Expected validation error');
-  assert(errorResponse.validationErrors && errorResponse.validationErrors.length > 0, 
-    'Expected validation errors to be present');
+  const errorResponse = this.response!.data as ErrorResponse;
+  expect(errorResponse).to.have.property('error').that.equals('Validation Failed');
+  expect(errorResponse).to.have.property('validationErrors').that.is.an('array').and.is.not.empty;
 });
 
 Then('the response should contain a conflict error message', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
+  expect(this.response).to.exist;
   
-  const errorResponse = this.response.data as ErrorResponse;
-  assert(errorResponse.error === 'Conflict', 'Expected conflict error');
-  assert(errorResponse.message && errorResponse.message.includes('already exists'), 'Expected duplicate email error message');
+  const errorResponse = this.response!.data as ErrorResponse;
+  expect(errorResponse).to.have.property('error').that.equals('Conflict');
+  expect(errorResponse).to.have.property('message').that.includes('already exists');
 });
 
 Then('the response should contain a not found error message', function(this: CustomWorld) {
-  assert(this.response, 'No response available');
+  expect(this.response).to.exist;
   
-  const errorResponse = this.response.data as ErrorResponse;
-  assert(errorResponse.error === 'Not Found', 'Expected not found error');
-  assert(errorResponse.message && errorResponse.message.includes('not found'), 'Expected not found error message');
+  const errorResponse = this.response!.data as ErrorResponse;
+  expect(errorResponse).to.have.property('error').that.equals('Not Found');
+  expect(errorResponse).to.have.property('message').that.includes('not found');
 });
