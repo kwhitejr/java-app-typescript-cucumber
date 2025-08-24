@@ -2,7 +2,6 @@ import { AxiosResponse, AxiosError } from 'axios';
 import axios from 'axios';
 import { Configuration, UsersApi, UserResponse, UserCreateRequest } from '../generated';
 import { HealthResponse } from './enhanced-types';
-import { UserQueryBuilder } from './builders/user-query-builder';
 import { TestHelperBuilder } from './builders/test-helper-builder';
 import { BuilderConfig } from './builders/base-builder';
 import { BuilderResponse } from './enhanced-types';
@@ -20,8 +19,7 @@ export class ApiGateway {
   // Generated API clients
   public readonly users: UsersApi;
 
-  // Builder-based clients for complex operations
-  public readonly userQueries: UserQueryBuilder;
+  // Builder-based clients for test utilities
   public readonly testHelpers: TestHelperBuilder;
 
   private readonly config: ApiGatewayConfig;
@@ -51,7 +49,6 @@ export class ApiGateway {
       headers: this.config.headers
     };
 
-    this.userQueries = new UserQueryBuilder(builderConfig);
     this.testHelpers = new TestHelperBuilder(builderConfig);
 
     if (this.config.enableLogging) {
