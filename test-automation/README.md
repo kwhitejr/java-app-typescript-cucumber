@@ -170,29 +170,198 @@ await testHelpers.waitForUserExists(userId);
 await testHelpers.waitForUserCount(expectedCount);
 ```
 
-## 🌍 World Context
+## 🌍 Cucumber World Context
 
-The `CustomWorld` class maintains test state and provides API access:
+### Understanding Cucumber's "World" Concept
 
-### Key Properties
-- `response`: Last API response
-- `currentUser`: Currently active user for test
-- `createdUsers`: Users created during test (auto-cleanup)
-- `userData`: Current user data for operations
-- `apiGateway`: Modern API client
-- `apiClient`: Legacy compatibility layer
+In Cucumber, the **World** is a context object that provides shared state and functionality across all step definitions within a single scenario. Think of it as the "this" context that gets passed between your Given, When, and Then steps.
 
-### Test Lifecycle Management
+**Key Concepts:**
+- **Scenario Isolation**: Each scenario gets a fresh World instance
+- **State Sharing**: Steps can store and access data through the World
+- **Lifecycle Management**: World exists from scenario start to finish
+- **Dependency Injection**: World provides access to utilities and clients
+
+### Our Custom World Implementation
+
+The `CustomWorld` class extends Cucumber's default World to provide:
+
+#### 1. **API Client Access**
 ```typescript
-// Automatic cleanup of test data
-this.addCreatedUser(user); // Tracks for cleanup
-
-// Setup test scenario
-await this.setupTestScenario('scenario-name');
-
-// Teardown and cleanup
-await this.teardownTestScenario();
+// Two API clients for different needs
+this.apiGateway    // Modern, type-safe API client (generated from OpenAPI)
+this.apiClient     // Legacy compatibility layer for existing tests
 ```
+
+#### 2. **State Management**
+```typescript
+// Track test state across steps
+this.response      // Last HTTP response from API calls
+this.currentUser   // Active user being tested
+this.userData      // User data for current operation
+this.createdUsers  // Auto-tracked users for cleanup
+```
+
+#### 3. **Test Lifecycle Hooks**
+```typescript
+// Automatic setup and teardown
+await this.setupTestScenario('scenario-name');    // Pre-scenario setup
+await this.teardownTestScenario();                // Post-scenario cleanup
+this.addCreatedUser(user);                        // Track for auto-cleanup
+```
+
+### How World Works in Practice
+
+Consider this typical test flow:
+
+```gherkin
+Scenario: Create and update user
+  Given I have user data:
+    | name     | email           |
+    | John Doe | john@example.com|
+  When I create the user
+  Then the user should be created successfully
+  When I update the user's bio to "Software Engineer"
+  Then the user's bio should be updated
+```
+
+**Step-by-Step World Usage:**
+
+```typescript
+// Step 1: Store user data in World
+Given('I have user data:', function(this: CustomWorld, dataTable) {
+  this.userData = dataTable.hashes()[0]; // Stored in World for later steps
+});
+
+// Step 2: Create user, store response and track for cleanup
+When('I create the user', async function(this: CustomWorld) {
+  this.response = await this.apiClient.createUser(this.userData); // Uses stored data
+  this.currentUser = this.response.data;                          // Store created user
+  this.addCreatedUser(this.currentUser);                          // Track for cleanup
+});
+
+// Step 3: Validate response from World
+Then('the user should be created successfully', function(this: CustomWorld) {
+  assert(this.response?.status === 201);      // Access stored response
+  assert(this.currentUser?.id);               // Access stored user
+});
+
+// Step 4: Update using current user from World
+When('I update the user\'s bio to {string}', async function(this: CustomWorld, bio: string) {
+  this.response = await this.apiClient.updateUser(this.currentUser.id, { bio });
+  this.currentUser = this.response.data;      // Update stored user
+});
+
+// Step 5: Validate updated state
+Then('the user\'s bio should be updated', function(this: CustomWorld) {
+  assert(this.currentUser?.bio === 'Software Engineer');
+});
+```
+
+### World Lifecycle and Cleanup
+
+**Scenario Start:**
+1. Fresh `CustomWorld` instance created
+2. API clients initialized
+3. Empty state containers ready
+
+**During Scenario:**
+1. Steps store and share data through World properties
+2. API responses cached for validation
+3. Created resources automatically tracked
+
+**Scenario End:**
+1. `teardownTestScenario()` automatically called
+2. All tracked users deleted from database
+3. World instance destroyed (ready for next scenario)
+
+### Advanced World Features
+
+#### 1. **Test Helper Integration**
+```typescript
+// Access test utilities through World
+await this.testHelpers.waitForHealthy(30000);
+await this.testHelpers.cleanupTestUsers(this.createdUsers.map(u => u.id));
+```
+
+#### 2. **Error Context Preservation**
+```typescript
+// World maintains error context across steps
+try {
+  this.response = await this.apiClient.deleteUser(999);
+} catch (error) {
+  this.lastError = error; // Available for validation in next step
+}
+```
+
+#### 3. **Scenario-Specific Setup**
+```typescript
+// Different scenarios can have different initialization
+await this.setupTestScenario('admin-user-scenario');  // Sets up admin context
+await this.setupTestScenario('bulk-operation');       // Sets up multiple users
+```
+
+### Best Practices for World Usage
+
+#### ✅ **Good Practices**
+```typescript
+// Store meaningful state
+this.currentUser = response.data;
+
+// Use descriptive property names
+this.lastValidationError = error;
+
+// Track resources for cleanup
+this.addCreatedUser(user);
+
+// Chain operations through World state
+const updatedUser = await this.apiClient.updateUser(this.currentUser.id, changes);
+```
+
+#### ❌ **Avoid These Patterns**
+```typescript
+// Don't store temporary variables
+this.temp = someValue; // Use local variables instead
+
+// Don't bypass World for shared state
+globalState.user = user; // Use this.currentUser instead
+
+// Don't forget cleanup tracking
+const user = await createUser(); // Should use this.addCreatedUser()
+```
+
+### World Implementation Details
+
+Our `CustomWorld` extends the base Cucumber World with:
+
+```typescript
+export class CustomWorld extends World {
+  // API Access
+  public apiGateway: DefaultApi;
+  public apiClient: any; // Legacy compatibility
+
+  // State Management
+  public response?: any;
+  public currentUser?: UserResponse;
+  public userData?: any;
+  public createdUsers: UserResponse[] = [];
+
+  // Lifecycle Methods
+  async setupTestScenario(scenarioType?: string): Promise<void>
+  async teardownTestScenario(): Promise<void>
+  addCreatedUser(user: UserResponse): void
+  
+  // Test Utilities
+  public testHelpers: TestHelperBuilder;
+}
+```
+
+This design ensures that:
+- Each scenario runs in complete isolation
+- Test data is automatically managed and cleaned up
+- API clients are readily available to all steps
+- Complex test state can be maintained across multiple steps
+- Debugging is simplified through consistent state access patterns
 
 ## 🔧 Configuration
 
