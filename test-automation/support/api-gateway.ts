@@ -90,37 +90,58 @@ export class ApiGateway {
     return headers;
   }
 
-  private handleAxiosError(error: any): BuilderResponse<any> {
-    if (error.response) {
-      // HTTP error response (4xx, 5xx)
-      return {
-        status: error.response.status,
-        data: error.response.data,
-        headers: this.convertHeaders(error.response.headers)
-      };
-    } else if (error.request) {
-      // Network error
-      return {
-        status: 0,
-        data: {
-          timestamp: new Date().toISOString(),
+  private handleAxiosError(error: unknown): BuilderResponse<any> {
+    // Type guard to check if error is AxiosError-like
+    const isAxiosError = (err: unknown): err is AxiosError => {
+      return err !== null && typeof err === 'object' && 
+             ('response' in err || 'request' in err || 'config' in err);
+    };
+
+    if (isAxiosError(error)) {
+      if (error.response) {
+        // HTTP error response (4xx, 5xx)
+        return {
+          status: error.response.status,
+          data: error.response.data,
+          headers: this.convertHeaders(error.response.headers)
+        };
+      } else if (error.request) {
+        // Network error
+        return {
           status: 0,
-          error: 'Network Error',
-          message: 'No response received from server',
-          path: error.config?.url || 'unknown'
-        },
-        headers: {}
-      };
+          data: {
+            timestamp: new Date().toISOString(),
+            status: 0,
+            error: 'Network Error',
+            message: 'No response received from server',
+            path: error.config?.url || 'unknown'
+          },
+          headers: {}
+        };
+      } else {
+        // Request setup error
+        return {
+          status: 0,
+          data: {
+            timestamp: new Date().toISOString(),
+            status: 0,
+            error: 'Request Error',
+            message: error.message || 'Unknown error occurred',
+            path: error.config?.url || 'unknown'
+          },
+          headers: {}
+        };
+      }
     } else {
-      // Request setup error
+      // Non-Axios error (fallback)
       return {
         status: 0,
         data: {
           timestamp: new Date().toISOString(),
           status: 0,
-          error: 'Request Error',
-          message: error.message || 'Unknown error occurred',
-          path: error.config?.url || 'unknown'
+          error: 'Unknown Error',
+          message: error instanceof Error ? error.message : 'An unknown error occurred',
+          path: 'unknown'
         },
         headers: {}
       };

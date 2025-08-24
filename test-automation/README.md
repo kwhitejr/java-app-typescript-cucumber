@@ -105,11 +105,11 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../support/world';
 
 Given('some precondition', async function(this: CustomWorld) {
-  // Implementation using this.apiGateway or this.apiClient
+  // Implementation using this.apiGateway
 });
 
 When('I perform an action', async function(this: CustomWorld) {
-  this.response = await this.apiClient.someOperation();
+  this.response = await this.apiGateway.someOperation();
 });
 
 Then('I should see expected result', function(this: CustomWorld) {
@@ -188,9 +188,8 @@ The `CustomWorld` class extends Cucumber's default World to provide:
 
 #### 1. **API Client Access**
 ```typescript
-// Two API clients for different needs
-this.apiGateway    // Modern, type-safe API client (generated from OpenAPI)
-this.apiClient     // Legacy compatibility layer for existing tests
+// API client for HTTP requests
+this.apiGateway    // Type-safe API client (generated from OpenAPI)
 ```
 
 #### 2. **State Management**
@@ -235,7 +234,7 @@ Given('I have user data:', function(this: CustomWorld, dataTable) {
 
 // Step 2: Create user, store response and track for cleanup
 When('I create the user', async function(this: CustomWorld) {
-  this.response = await this.apiClient.createUser(this.userData); // Uses stored data
+  this.response = await this.apiGateway.createUser(this.userData); // Uses stored data
   this.currentUser = this.response.data;                          // Store created user
   this.addCreatedUser(this.currentUser);                          // Track for cleanup
 });
@@ -248,7 +247,7 @@ Then('the user should be created successfully', function(this: CustomWorld) {
 
 // Step 4: Update using current user from World
 When('I update the user\'s bio to {string}', async function(this: CustomWorld, bio: string) {
-  this.response = await this.apiClient.updateUser(this.currentUser.id, { bio });
+  this.response = await this.apiGateway.updateUser(this.currentUser.id, { bio });
   this.currentUser = this.response.data;      // Update stored user
 });
 
@@ -288,7 +287,7 @@ await this.testHelpers.cleanupTestUsers(this.createdUsers.map(u => u.id));
 ```typescript
 // World maintains error context across steps
 try {
-  this.response = await this.apiClient.deleteUser(999);
+  this.response = await this.apiGateway.deleteUser(999);
 } catch (error) {
   this.lastError = error; // Available for validation in next step
 }
@@ -315,7 +314,7 @@ this.lastValidationError = error;
 this.addCreatedUser(user);
 
 // Chain operations through World state
-const updatedUser = await this.apiClient.updateUser(this.currentUser.id, changes);
+const updatedUser = await this.apiGateway.updateUser(this.currentUser.id, changes);
 ```
 
 #### ❌ **Avoid These Patterns**
@@ -338,7 +337,6 @@ Our `CustomWorld` extends the base Cucumber World with:
 export class CustomWorld extends World {
   // API Access
   public apiGateway: DefaultApi;
-  public apiClient: any; // Legacy compatibility
 
   // State Management
   public response?: any;
