@@ -5,6 +5,12 @@ set -e
 echo "🚀 Starting Java Spring Boot + TypeScript Cucumber Test Demo"
 echo "============================================================"
 
+# Check if Docker mode is requested
+DOCKER_MODE=false
+if [ "$1" = "--docker" ] || [ "$1" = "-d" ]; then
+    DOCKER_MODE=true
+fi
+
 # Function to check if a port is in use
 check_port() {
     if lsof -Pi :8080 -sTCP:LISTEN -t >/dev/null 2>&1; then
@@ -80,9 +86,33 @@ cleanup() {
 trap cleanup EXIT
 
 # Main execution
-start_spring_app
-run_tests
-
-echo ""
-echo "🎉 Test execution completed!"
-echo "View the HTML report at: test-automation/reports/cucumber_report.html"
+if [ "$DOCKER_MODE" = true ]; then
+    echo "🐳 Running in Docker mode..."
+    echo "Building and starting services with Docker Compose..."
+    
+    # Build and run with docker compose
+    docker compose down --volumes --remove-orphans 2>/dev/null || true
+    docker compose build
+    docker compose up --abort-on-container-exit --exit-code-from tests
+    
+    # Copy test reports from container
+    docker compose cp tests:/app/reports ./test-automation/reports 2>/dev/null || echo "No test reports to copy"
+    
+    # Cleanup
+    docker compose down --volumes --remove-orphans
+    
+    echo ""
+    echo "🎉 Docker test execution completed!"
+    echo "View the HTML report at: test-automation/reports/cucumber_report.html"
+else
+    echo "🏠 Running in local mode (H2 with PostgreSQL compatibility)..."
+    start_spring_app
+    run_tests
+    
+    echo ""
+    echo "🎉 Test execution completed!"
+    echo "View the HTML report at: test-automation/reports/cucumber_report.html"
+    echo ""
+    echo "💡 Tip: Run with --docker flag to use full PostgreSQL setup:"
+    echo "   ./run-tests.sh --docker"
+fi

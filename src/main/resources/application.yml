@@ -3,13 +3,13 @@ spring:
     name: demo
   
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
     driverClassName: org.h2.Driver
     username: sa
     password: password
   
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
     show-sql: false
@@ -66,7 +66,7 @@ spring:
       on-profile: test
       
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
     
   jpa:
     hibernate:
@@ -85,3 +85,21 @@ spring:
 logging:
   level:
     com.example.demo: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+      
+  datasource:
+    url: jdbc:postgresql://postgres:5432/demo
+    driverClassName: org.postgresql.Driver
+    username: demo_user
+    password: demo_password
+    
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

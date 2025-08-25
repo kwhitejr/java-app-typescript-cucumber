@@ -23,6 +23,9 @@
   ],
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "devDependencies": {
     "@cucumber/cucumber": "^12.1.0",
     "@openapitools/openapi-generator-cli": "^2.23.0",

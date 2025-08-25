@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Java 17 Spring Boot 3.5.x application with a separate TypeScript Cucumber test suite that performs black box testing via HTTP API calls. The project demonstrates BDD testing where the TypeScript tests have no knowledge of the Java application's internal implementation.
 
+**Database Setup**: The application supports both local development (H2 in PostgreSQL compatibility mode) and production/CI environments (full PostgreSQL via Docker).
+
 ## Architecture
 
 **Java Application (Spring Boot):**
@@ -16,9 +18,10 @@ This is a Java 17 Spring Boot 3.5.x application with a separate TypeScript Cucum
   - `repository/` - Data access layer (`UserRepository.java`)
   - `dto/` - Data Transfer Objects for API requests/responses
   - `exception/` - Global exception handling
-- H2 in-memory database with JPA/Hibernate
+- Database: H2 in PostgreSQL compatibility mode (local) or PostgreSQL (Docker)
 - Spring Boot Actuator for monitoring endpoints
 - Application runs on port 8080
+- Full Docker Compose setup for CI/CD pipelines
 
 **TypeScript Test Suite:**
 - `test-automation/` - Completely separate test project
@@ -67,17 +70,33 @@ npm run build
 
 ### Full Integration Testing
 ```bash
-# Run everything with one command (recommended)
+# Local mode: H2 with PostgreSQL compatibility (no installation required)
 ./run-tests.sh
+
+# Docker mode: Full PostgreSQL setup for production-like testing
+./run-tests.sh --docker
+```
+
+### Docker Development
+```bash
+# Build and run full stack with PostgreSQL
+docker compose up --build
+
+# Run tests only
+docker compose up tests
+
+# Clean up
+docker compose down --volumes
 ```
 
 ## Key Application Configuration
 
-- **Database**: H2 in-memory (`jdbc:h2:mem:testdb`)
+- **Database (Local)**: H2 in PostgreSQL compatibility mode (`jdbc:h2:mem:testdb;MODE=PostgreSQL`)
+- **Database (Docker)**: PostgreSQL 15 (`jdbc:postgresql://postgres:5432/demo`)
 - **API Base Path**: `/api/users`
 - **Actuator Endpoints**: `/actuator/*` (health, info, metrics, etc.)
-- **H2 Console**: `http://localhost:8080/h2-console` (username: `sa`, password: `password`)
-- **Profiles**: default, dev (debug logging + SQL), test
+- **H2 Console** (Local only): `http://localhost:8080/h2-console` (username: `sa`, password: `password`)
+- **Profiles**: default, dev (debug logging + SQL), test, docker (PostgreSQL)
 
 ## Testing Approach
 
@@ -87,6 +106,7 @@ This project uses **black box testing** principles:
 - All interactions happen through HTTP API endpoints
 - Tests focus on API contract validation, not implementation details
 - Test reports generated in `test-automation/reports/`
+- Works identically in both local (H2) and Docker (PostgreSQL) modes
 
 ## Test Execution Profiles
 
@@ -108,8 +128,20 @@ This project uses **black box testing** principles:
 
 ## Important Notes
 
+**Local Development:**
+- Uses H2 database in PostgreSQL compatibility mode (no PostgreSQL installation needed)
 - Application must be running on port 8080 before executing TypeScript tests
+- H2 console available at `http://localhost:8080/h2-console`
+
+**Docker/CI Mode:**
+- Uses real PostgreSQL database for production-like testing
+- Full containerization: app, database, and test runner
+- Automatic service orchestration and health checks
+- Test reports automatically copied from containers
+
+**General:**
 - The `run-tests.sh` script handles the full lifecycle (start app, run tests, cleanup)
 - Tests validate both user CRUD operations and Spring Boot Actuator endpoints
 - Test reports include human-readable HTML and machine-readable JSON/XML formats
 - All dependencies are kept up-to-date with latest stable versions
+- Both modes use identical PostgreSQL dialect for maximum compatibility

@@ -1,0 +1,1869 @@
+[
+  {
+    "description": "  As a system administrator\n  I want to monitor the application health through the Actuator health endpoint\n  So that I can ensure the application is healthy and running properly",
+    "elements": [
+      {
+        "description": "",
+        "id": "spring-boot-actuator-health-monitoring;check-application-health-status",
+        "keyword": "Scenario",
+        "line": 9,
+        "name": "Check application health status",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 4718978
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the Application is running",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6300285
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I request the health endpoint",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3014769
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "the response status should be 200",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2880621
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "the health status should be \"UP\"",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2139458
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the health response should contain components",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 726375
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 5345589
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "spring-boot-actuator-health-monitoring;verify-health-endpoint-shows-database-connectivity",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "Verify health endpoint shows database connectivity",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2778350
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the Application is running",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5267898
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "I request the health endpoint",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2921311
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "the response status should be 200",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 191180
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "the health components should include \"db\"",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1074888
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "the database component status should be \"UP\"",
+            "match": {
+              "location": "step-definitions/actuator-steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1776994
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 4785052
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "spring-boot-actuator-health-monitoring",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Spring Boot Actuator Health Monitoring",
+    "tags": [],
+    "uri": "features/actuator-monitoring.feature"
+  },
+  {
+    "description": "  As a system administrator\n  I want to manage users through the API\n  So that I can perform CRUD operations on user data",
+    "elements": [
+      {
+        "description": "",
+        "id": "user-management-api;get-all-users-when-no-users-exist",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Get all users when no users exist",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3429419
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2373154
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4330766
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "I request all users",
+            "match": {
+              "location": "step-definitions/user-steps.ts:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4205309
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the response status should be 200",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 129901
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the response should contain an empty list",
+            "match": {
+              "location": "step-definitions/user-steps.ts:124"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 781771
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3874561
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-a-new-user-successfully",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "Create a new user successfully",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2594889
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2592278
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3307582
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "John Doe",
+                      "john@example.com",
+                      "Software developer"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 16,
+            "name": "I have valid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 683091
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 19,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 92399003
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 20,
+            "name": "the response status should be 201",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 106150
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "the response should contain the user data",
+            "match": {
+              "location": "step-definitions/user-steps.ts:129"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 757076
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "the user should have a generated ID",
+            "match": {
+              "location": "step-definitions/user-steps.ts:142"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1035354
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 226826264
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-multiple-users",
+        "keyword": "Scenario",
+        "line": 24,
+        "name": "Create multiple users",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2844356
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2689184
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3828913
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Alice Smith",
+                      "alice@example.com",
+                      "Product manager"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 25,
+            "name": "I have valid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 76248
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 28,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6837093
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "the response status should be 201",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 113671
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Bob Wilson",
+                      "bob@example.com",
+                      "QA engineer"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 30,
+            "name": "I have valid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 64053
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 33,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5985458
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 34,
+            "name": "the response status should be 201",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 110873
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 35,
+            "name": "I request all users",
+            "match": {
+              "location": "step-definitions/user-steps.ts:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4696429
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 36,
+            "name": "the response status should be 200",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 123221
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "the response should contain 2 users",
+            "match": {
+              "location": "step-definitions/user-steps.ts:149"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1075514
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 14420298
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;get-user-by-id",
+        "keyword": "Scenario",
+        "line": 39,
+        "name": "Get user by ID",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3980547
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2482152
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4602775
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 40,
+            "name": "a user exists with name \"Jane Doe\" and email \"jane@example.com\"",
+            "match": {
+              "location": "step-definitions/user-steps.ts:41"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8231072
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 41,
+            "name": "I request the user by ID",
+            "match": {
+              "location": "step-definitions/user-steps.ts:68"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5833249
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 42,
+            "name": "the response status should be 200",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 87806
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 43,
+            "name": "the response should contain the user \"Jane Doe\"",
+            "match": {
+              "location": "step-definitions/user-steps.ts:154"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 917601
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 9511170
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;update-an-existing-user",
+        "keyword": "Scenario",
+        "line": 45,
+        "name": "Update an existing user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2393125
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2321518
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3967862
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 46,
+            "name": "a user exists with name \"Original Name\" and email \"original@example.com\"",
+            "match": {
+              "location": "step-definitions/user-steps.ts:41"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7715629
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Updated Name",
+                      "updated@example.com",
+                      "Updated bio"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "When ",
+            "line": 47,
+            "name": "I update the user with:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 13745142
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 50,
+            "name": "the response status should be 200",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 73061
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "the response should contain the updated user data",
+            "match": {
+              "location": "step-definitions/user-steps.ts:161"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 581758
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 8203130
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;delete-a-user",
+        "keyword": "Scenario",
+        "line": 53,
+        "name": "Delete a user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2810775
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1909423
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3269585
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 54,
+            "name": "a user exists with name \"To Delete\" and email \"delete@example.com\"",
+            "match": {
+              "location": "step-definitions/user-steps.ts:41"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4922557
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 55,
+            "name": "I delete the user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:100"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5559532
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 56,
+            "name": "the response status should be 204",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 86628
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 57,
+            "name": "I request the user by ID",
+            "match": {
+              "location": "step-definitions/user-steps.ts:68"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20745132
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 58,
+            "name": "the response status should be 404",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 67395
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 9615356
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-user-with-invalid-data",
+        "keyword": "Scenario Outline",
+        "line": 70,
+        "name": "Create user with invalid data",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2599792
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1971386
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3247231
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "",
+                      "valid@email.com",
+                      "Valid bio"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 61,
+            "name": "I have invalid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 384460
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 64,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8713720
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 65,
+            "name": "the response status should be 400",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 84702
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 66,
+            "name": "the response should contain validation errors",
+            "match": {
+              "location": "step-definitions/user-steps.ts:171"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 549726
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3029997
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-user-with-invalid-data",
+        "keyword": "Scenario Outline",
+        "line": 71,
+        "name": "Create user with invalid data",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3145332
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2386925
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2670001
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "X",
+                      "valid@email.com",
+                      "Valid bio"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 61,
+            "name": "I have invalid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 52106
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 64,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2937237
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 65,
+            "name": "the response status should be 400",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 61339
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 66,
+            "name": "the response should contain validation errors",
+            "match": {
+              "location": "step-definitions/user-steps.ts:171"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 107605
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 5496671
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-user-with-invalid-data",
+        "keyword": "Scenario Outline",
+        "line": 72,
+        "name": "Create user with invalid data",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2584628
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2019972
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2900745
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Valid Name",
+                      "invalid-email",
+                      "Valid bio"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 61,
+            "name": "I have invalid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 40937
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 64,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3024091
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 65,
+            "name": "the response status should be 400",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 47414
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 66,
+            "name": "the response should contain validation errors",
+            "match": {
+              "location": "step-definitions/user-steps.ts:171"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 159568
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3375226
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-user-with-invalid-data",
+        "keyword": "Scenario Outline",
+        "line": 73,
+        "name": "Create user with invalid data",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2917832
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1847955
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2759653
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "name",
+                      "email",
+                      "bio"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Valid Name",
+                      "valid@email.com",
+                      "This bio is way too long and exceeds the maximum allowed length of 200 characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Given ",
+            "line": 61,
+            "name": "I have invalid user data:",
+            "match": {
+              "location": "step-definitions/user-steps.ts:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 30188
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 64,
+            "name": "I create a new user",
+            "match": {
+              "location": "step-definitions/user-steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2655159
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 65,
+            "name": "the response status should be 400",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 45916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 66,
+            "name": "the response should contain validation errors",
+            "match": {
+              "location": "step-definitions/user-steps.ts:171"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 79649
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3220010
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;create-user-with-duplicate-email",
+        "keyword": "Scenario",
+        "line": 75,
+        "name": "Create user with duplicate email",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2530616
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2825547
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3337650
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 76,
+            "name": "a user exists with name \"First User\" and email \"duplicate@example.com\"",
+            "match": {
+              "location": "step-definitions/user-steps.ts:41"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7004981
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 77,
+            "name": "I try to create another user with email \"duplicate@example.com\"",
+            "match": {
+              "location": "step-definitions/user-steps.ts:109"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7941551
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 78,
+            "name": "the response status should be 409",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 84343
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 79,
+            "name": "the response should contain a conflict error message",
+            "match": {
+              "location": "step-definitions/user-steps.ts:179"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1652958
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 9351494
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;get-non-existent-user",
+        "keyword": "Scenario",
+        "line": 81,
+        "name": "Get non-existent user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2551234
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2422207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3192510
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 82,
+            "name": "I request a user with ID 99999",
+            "match": {
+              "location": "step-definitions/user-steps.ts:73"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4247120
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 83,
+            "name": "the response status should be 404",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 70746
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 84,
+            "name": "the response should contain a not found error message",
+            "match": {
+              "location": "step-definitions/user-steps.ts:187"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 607723
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 4125490
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;update-non-existent-user",
+        "keyword": "Scenario",
+        "line": 86,
+        "name": "Update non-existent user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2553195
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2105938
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3347181
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 87,
+            "name": "I try to update a user with ID 99999",
+            "match": {
+              "location": "step-definitions/user-steps.ts:90"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4742603
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 88,
+            "name": "the response status should be 404",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 48397
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 89,
+            "name": "the response should contain a not found error message",
+            "match": {
+              "location": "step-definitions/user-steps.ts:187"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 76873
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2888536
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "user-management-api;delete-non-existent-user",
+        "keyword": "Scenario",
+        "line": 91,
+        "name": "Delete non-existent user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 2362859
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "the User API is running",
+            "match": {
+              "location": "step-definitions/user-steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2017228
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the database is clean",
+            "match": {
+              "location": "step-definitions/user-steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3259138
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 92,
+            "name": "I try to delete a user with ID 99999",
+            "match": {
+              "location": "step-definitions/user-steps.ts:105"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5013987
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 93,
+            "name": "the response status should be 404",
+            "match": {
+              "location": "step-definitions/user-steps.ts:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 45854
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 94,
+            "name": "the response should contain a not found error message",
+            "match": {
+              "location": "step-definitions/user-steps.ts:187"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 69997
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 3009277
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "user-management-api",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "User Management API",
+    "tags": [],
+    "uri": "features/user-management.feature"
+  }
+]
