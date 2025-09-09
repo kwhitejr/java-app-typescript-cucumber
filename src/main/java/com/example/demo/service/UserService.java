@@ -2,8 +2,11 @@ package com.example.demo.service;
 
 import com.example.demo.dto.UserCreateRequest;
 import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.ProfileValidationRequest;
+import com.example.demo.dto.ProfileValidationResponse;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.exception.EmailAlreadyExistsException;
+import com.example.demo.exception.ProfileValidationException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +19,12 @@ import java.util.stream.Collectors;
 public class UserService {
     
     private final UserRepository userRepository;
+    private final ProfileValidationService profileValidationService;
     
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ProfileValidationService profileValidationService) {
         this.userRepository = userRepository;
+        this.profileValidationService = profileValidationService;
     }
     
     public List<UserResponse> getAllUsers() {
@@ -40,6 +45,15 @@ public class UserService {
             throw new EmailAlreadyExistsException("Email " + request.getEmail() + " already exists");
         }
         
+        // Validate profile with external service
+        ProfileValidationRequest validationRequest = new ProfileValidationRequest(
+            request.getName(), request.getEmail(), request.getBio());
+        ProfileValidationResponse validationResponse = profileValidationService.validateProfile(validationRequest);
+        
+        if (!validationResponse.isValid()) {
+            throw new ProfileValidationException("Profile validation failed: " + validationResponse.getMessage());
+        }
+        
         User user = new User(request.getName(), request.getEmail(), request.getBio());
         User savedUser = userRepository.save(user);
         return new UserResponse(savedUser);
@@ -52,6 +66,15 @@ public class UserService {
         if (!existingUser.getEmail().equals(request.getEmail()) && 
             userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Email " + request.getEmail() + " already exists");
+        }
+        
+        // Validate updated profile with external service
+        ProfileValidationRequest validationRequest = new ProfileValidationRequest(
+            request.getName(), request.getEmail(), request.getBio());
+        ProfileValidationResponse validationResponse = profileValidationService.validateProfile(validationRequest);
+        
+        if (!validationResponse.isValid()) {
+            throw new ProfileValidationException("Profile validation failed: " + validationResponse.getMessage());
         }
         
         existingUser.setName(request.getName());

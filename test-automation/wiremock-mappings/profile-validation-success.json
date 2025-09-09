@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/api/profile/validate"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "valid": true,
+      "message": "Profile validation successful",
+      "riskScore": "LOW"
+    },
+    "fixedDelayMilliseconds": 100
+  },
+  "priority": 10
+}

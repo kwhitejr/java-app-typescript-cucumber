@@ -59,6 +59,11 @@ logging:
   level:
     com.example.demo: INFO
 
+app:
+  profile-validation:
+    base-url: http://localhost:8081
+    timeout: 5
+
 ---
 spring:
   config:
@@ -103,3 +108,8 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+
+app:
+  profile-validation:
+    base-url: http://wiremock:8080
+    timeout: 10

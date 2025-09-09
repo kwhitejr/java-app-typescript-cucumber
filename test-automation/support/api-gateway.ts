@@ -203,6 +203,20 @@ export class ApiGateway {
     }
   }
 
+  async callProfileValidation(profileData: {name: string, email: string, bio?: string}): Promise<BuilderResponse<any>> {
+    try {
+      const axiosResponse = await axios.post(`${this.config.baseURL}/api/users/validate-profile`, profileData, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        timeout: this.config.timeout
+      });
+      return this.convertAxiosResponse(axiosResponse);
+    } catch (error) {
+      return this.handleAxiosError(error);
+    }
+  }
+
 
 
 

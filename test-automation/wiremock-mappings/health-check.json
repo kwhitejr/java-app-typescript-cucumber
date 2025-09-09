@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "HEAD",
+    "urlPath": "/"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  },
+  "priority": 10
+}

@@ -33,6 +33,24 @@ This is a Java 17 Spring Boot 3.5.x application with a separate TypeScript Cucum
 
 ## Development Commands
 
+### Quick Start (Recommended)
+```bash
+# Run full test suite with Docker Compose (PostgreSQL + WireMock + Cucumber tests)
+make test
+
+# Start services for development/debugging
+make up-detached
+
+# View service logs
+make logs
+
+# Stop all services
+make down
+
+# Show all available commands
+make help
+```
+
 ### Java Application
 ```bash
 # Build and run the Spring Boot application

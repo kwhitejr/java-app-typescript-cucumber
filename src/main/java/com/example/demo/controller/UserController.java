@@ -2,7 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.UserCreateRequest;
 import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.ProfileValidationRequest;
+import com.example.demo.dto.ProfileValidationResponse;
 import com.example.demo.service.UserService;
+import com.example.demo.service.ProfileValidationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +19,12 @@ import java.util.List;
 public class UserController {
     
     private final UserService userService;
+    private final ProfileValidationService profileValidationService;
     
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ProfileValidationService profileValidationService) {
         this.userService = userService;
+        this.profileValidationService = profileValidationService;
     }
     
     @GetMapping
@@ -51,5 +56,11 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/validate-profile")
+    public ResponseEntity<ProfileValidationResponse> validateProfile(@Valid @RequestBody ProfileValidationRequest request) {
+        ProfileValidationResponse response = profileValidationService.validateProfile(request);
+        return ResponseEntity.ok(response);
     }
 }

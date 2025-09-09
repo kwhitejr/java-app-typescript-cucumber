@@ -16,6 +16,11 @@ export class CustomWorld extends World implements TestContext {
   public createdUsers: EnhancedUserResponse[] = [];
   public lastError?: ErrorResponse;
   public userData?: UserCreateRequest;
+  public profileData?: {
+    name: string;
+    email: string;
+    bio?: string;
+  };
   public testMetadata?: {
     testName?: string;
     startTime?: Date;
@@ -42,6 +47,7 @@ export class CustomWorld extends World implements TestContext {
     this.currentUser = undefined;
     this.lastError = undefined;
     this.userData = undefined;
+    this.profileData = undefined;
   }
 
   public addCreatedUser(user: EnhancedUserResponse): void {

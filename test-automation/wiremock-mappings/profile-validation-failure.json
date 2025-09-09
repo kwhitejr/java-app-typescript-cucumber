@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/api/profile/validate",
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "contains": "spam"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "valid": false,
+      "message": "Profile contains suspicious content",
+      "riskScore": "HIGH"
+    },
+    "fixedDelayMilliseconds": 150
+  },
+  "priority": 1
+}
